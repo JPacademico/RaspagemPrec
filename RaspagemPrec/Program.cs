@@ -96,11 +96,13 @@ class Program
 
                                 MercadoLivreScraper mercadoLivreScraper = new MercadoLivreScraper();
                                 mercadoLivreScraper.ObterPreco(produto.Nome, produto.Id);
+                                string precoLivre = mercadoLivreScraper.ObterPreco(produto.Nome, produto.Id);
 
                                 MagazineLuizaScraper magazineLuizaScraper = new MagazineLuizaScraper();
                                 magazineLuizaScraper.ObterPreco(produto.Nome, produto.Id);
+                                string precoLuiza = magazineLuizaScraper.ObterPreco(produto.Nome, produto.Id);
 
-                                string responseCompare = Benchmarking.Compare(produto.Nome, produto.Id);
+                                string responseCompare = Benchmarking.Compare(precoLivre, precoLuiza);
 
                                 Console.WriteLine(responseCompare);
                                 SendLink.EnviarEmail(produto.Nome, precoLivre, precoLuiza, responseCompare);

@@ -11,7 +11,7 @@ namespace RaspagemPrec.Operations
     internal class SendLink
     {
         //Enviar email com o resultado da comparação
-        static void EnviarEmail(string nome, string precoLuiza, string precoLivre, string responseCompare)
+        public static void EnviarEmail(string nome, string precoLuiza, string precoLivre, string responseCompare)
         {
             // Configurações do servidor SMTP do Gmail
             string smtpServer = "smtp-mail.outlook.com"; // Servidor SMTP do Gmail
@@ -39,6 +39,7 @@ namespace RaspagemPrec.Operations
                            $"Preço: {precoLuiza}\n" +
                            "" +
                            $"{responseCompare}\n" +
+                           "" +
                            ""
 
                 };

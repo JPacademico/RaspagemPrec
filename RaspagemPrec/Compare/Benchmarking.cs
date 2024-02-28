@@ -8,11 +8,10 @@ namespace RaspagemPrec.Compare
 {
     internal class Benchmarking
     {
-        public static string Compare(string nome, int idproduto)
+        public static string Compare(string precoLivre, string precoLuiza)
         {
 
-            string precoLivre;
-            string precoLuiza;
+         
             char[] charsToTrim = { 'R', '$', ' ' };
 
             MercadoLivreScraper mercado = new();
