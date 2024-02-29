@@ -13,6 +13,7 @@ public class MagazineLuizaScraper
             {
                 // Abre a página
                 driver.Navigate().GoToUrl($"https://www.magazineluiza.com.br/busca/{descricaoProduto}");
+                string url = $"https://www.magazineluiza.com.br/busca/{descricaoProduto}";
 
                 // Aguarda um tempo fixo para permitir que a página seja carregada (você pode ajustar conforme necessário)
                 System.Threading.Thread.Sleep(5000);

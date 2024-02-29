@@ -44,14 +44,16 @@ class Program
     static void Main(string[] args)
     {
         // Definir o intervalo de tempo para 5 minutos (300.000 milissegundos)
-        int intervalo = 6000;
+        int intervalo = 300000;
 
         // Criar um temporizador que dispara a cada 5 minutos
         Timer timer = new Timer(VerificarNovoProduto, null, 0, intervalo);
 
         // Manter a aplicação rodando
-        Console.WriteLine("Pressione qualquer tecla para sair...");
-        Console.ReadKey();
+        while (true)
+        {
+            Thread.Sleep(Timeout.Infinite);
+        }
     }
 
     static async void VerificarNovoProduto(object state)
@@ -97,15 +99,21 @@ class Program
                                 MercadoLivreScraper mercadoLivreScraper = new MercadoLivreScraper();
                                 mercadoLivreScraper.ObterPreco(produto.Nome, produto.Id);
                                 string precoLivre = mercadoLivreScraper.ObterPreco(produto.Nome, produto.Id);
+                                string linkMer = $"https://lista.mercadolivre.com.br/{produto.Nome}".Replace(' ', '+');
 
                                 MagazineLuizaScraper magazineLuizaScraper = new MagazineLuizaScraper();
                                 magazineLuizaScraper.ObterPreco(produto.Nome, produto.Id);
                                 string precoLuiza = magazineLuizaScraper.ObterPreco(produto.Nome, produto.Id);
+                                string linkMag = $"https://www.magazineluiza.com.br/busca/{produto.Nome}".Replace(' ', '+');
 
-                                string responseCompare = Benchmarking.Compare(precoLivre, precoLuiza);
+                                string responseCompare = Benchmarking.Compare(precoLivre, precoLuiza, linkMer, linkMag);
+                                RegistrarLog("210703", "joaopedro", DateTime.Now, "Benchmarking", "Success", produto.Id);
 
-                                Console.WriteLine(responseCompare);
                                 SendLink.EnviarEmail(produto.Nome, precoLivre, precoLuiza, responseCompare);
+                                RegistrarLog("210703", "joaopedro", DateTime.Now, "SendEmail", "Success", produto.Id);
+
+                                SendZap.EnviarZap(produto.Nome, precoLivre, precoLuiza, responseCompare);
+                                RegistrarLog("210703", "joaopedro", DateTime.Now, "SendZap", "Success", produto.Id);
 
                             }
                         }
