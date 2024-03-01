@@ -14,9 +14,6 @@ namespace RaspagemPrec.Compare
             char[] charsToTrim = { 'R', '$', ' ' };
 
 
-            MercadoLivreScraper mercado = new();
-            MagazineLuizaScraper magazine = new();
-
             decimal livreDecimal = Convert.ToDecimal(precoLivre.Trim(charsToTrim));
             decimal luizaDecimal = Convert.ToDecimal(precoLuiza.Trim(charsToTrim));
 

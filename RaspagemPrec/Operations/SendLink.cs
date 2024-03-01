@@ -10,23 +10,23 @@ namespace RaspagemPrec.Operations
 {
     internal class SendLink
     {
-        //Enviar email com o resultado da comparação
+
         public static void EnviarEmail(string nome, string precoLuiza, string precoLivre, string responseCompare)
         {
-            // Configurações do servidor SMTP do Gmail
-            string smtpServer = "smtp-mail.outlook.com"; // Servidor SMTP do Gmail
-            int porta = 587; // Porta SMTP do Gmail para TLS/STARTTLS
-            string remetente = "jpsendtest@outlook.com"; // Seu endereço de e-mail do Gmail
-            string senha = "bigode666"; // Sua senha do Gmail
+            
+            string smtpServer = "smtp-mail.outlook.com"; 
+            int porta = 587; 
+            string remetente = "jpsendtest@outlook.com"; 
+            string senha = "bigode666"; 
 
-            // Configurar cliente SMTP
+            
             using (SmtpClient client = new SmtpClient(smtpServer, porta))
             {
                 client.UseDefaultCredentials = false;
                 client.Credentials = new NetworkCredential(remetente, senha);
-                client.EnableSsl = true; // Habilitar SSL/TLS
+                client.EnableSsl = true; 
 
-                // Construir mensagem de e-mail
+
                 MailMessage mensagem = new MailMessage(remetente, "jpsendtest@outlook.com")
                 {
                     Subject = "Resultado da comparação de preços",
@@ -38,12 +38,14 @@ namespace RaspagemPrec.Operations
                            $"Produto: {nome}\n" +
                            $"Preço: R${precoLuiza}\n" +
                            "\n" +
-                           $"{responseCompare}\n"
+                           $"{responseCompare}\n"+
+                           "\n"+
+                           "by BOT 001897 - João Pedro Brandão Almeida"
 
 
                 };
 
-                // Enviar e-mail
+ 
                 client.Send(mensagem);
 
 

@@ -41,8 +41,19 @@ class Program
     // Lista para armazenar produtos já verificados
     static List<Produto> produtosVerificados = new List<Produto>();
 
+
+    static bool valorDigitado;
+    static string numZap;
     static void Main(string[] args)
     {
+        Console.WriteLine("Quer receber uma mensagem com o resultado? (sim ou não)");
+        string opt = Console.ReadLine();
+        valorDigitado = SendZap.AskZap(opt);
+        if (valorDigitado)
+        {
+            Console.WriteLine("Digite seu número (DDD + número) obs: apenas números");
+            numZap = "+55" + Console.ReadLine();
+        }
         // Definir o intervalo de tempo para 5 minutos (300.000 milissegundos)
         int intervalo = 300000;
 
@@ -91,18 +102,18 @@ class Program
                             // Adicionar o produto à lista de produtos verificados
                             produtosVerificados.Add(produto);
 
-                            // Registra um log no banco de dados apenas se o produto for novo
+                           
                             if (!ProdutoJaRegistrado(produto.Id))
                             {
                                 RegistrarLog("210703", "joaopedro", DateTime.Now, "Verify Product", "Success", produto.Id);
 
                                 MercadoLivreScraper mercadoLivreScraper = new MercadoLivreScraper();
-                                mercadoLivreScraper.ObterPreco(produto.Nome, produto.Id);
+                                
                                 string precoLivre = mercadoLivreScraper.ObterPreco(produto.Nome, produto.Id);
                                 string linkMer = $"https://lista.mercadolivre.com.br/{produto.Nome}".Replace(' ', '+');
 
                                 MagazineLuizaScraper magazineLuizaScraper = new MagazineLuizaScraper();
-                                magazineLuizaScraper.ObterPreco(produto.Nome, produto.Id);
+                                
                                 string precoLuiza = magazineLuizaScraper.ObterPreco(produto.Nome, produto.Id);
                                 string linkMag = $"https://www.magazineluiza.com.br/busca/{produto.Nome}".Replace(' ', '+');
 
@@ -112,8 +123,11 @@ class Program
                                 SendLink.EnviarEmail(produto.Nome, precoLivre, precoLuiza, responseCompare);
                                 RegistrarLog("210703", "joaopedro", DateTime.Now, "SendEmail", "Success", produto.Id);
 
-                                SendZap.EnviarZap(produto.Nome, precoLivre, precoLuiza, responseCompare);
+
+                                SendZap.EnviarZap(numZap, produto.Nome, precoLivre, precoLuiza, responseCompare);
                                 RegistrarLog("210703", "joaopedro", DateTime.Now, "SendZap", "Success", produto.Id);
+
+                                
 
                             }
                         }
