@@ -12,18 +12,17 @@ using System.ComponentModel.DataAnnotations;
 using RaspagemPrec.Compare;
 using RaspagemPrec.Operations;
 
-// Classe de contexto do banco de dados
+
 public class LogContext : DbContext
 {
     public DbSet<Log> Logs { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Server=PC03LAB2539\\SENAI;Initial Catalog=scrap_DB;User Id=sa;Password=senai.123;"); // Substitua "YourConnectionString" pela sua string de conexão
+        optionsBuilder.UseSqlServer("Server = PC03LAB2539\\SENAI; Initial Catalog = scrap_DB; User Id = sa; Password = senai.123;"); 
     }
 }
 
-// Classe de modelo para os logs
 public class Log
 {
     [Key]
@@ -38,22 +37,28 @@ public class Log
 
 class Program
 {
-    // Lista para armazenar produtos já verificados
+
     static List<Produto> produtosVerificados = new List<Produto>();
 
 
     static bool valorDigitado;
     static string numZap;
+    static string nomeMail;
     static void Main(string[] args)
     {
+        AskMail();
+        
         Console.WriteLine("Quer receber uma mensagem com o resultado? (sim ou não)");
         string opt = Console.ReadLine();
+
         valorDigitado = SendZap.AskZap(opt);
+
         if (valorDigitado)
         {
             Console.WriteLine("Digite seu número (DDD + número) obs: apenas números");
             numZap = "+55" + Console.ReadLine();
         }
+
         // Definir o intervalo de tempo para 5 minutos (300.000 milissegundos)
         int intervalo = 300000;
 
@@ -75,31 +80,31 @@ class Program
 
         try
         {
-            // Criar um objeto HttpClient
+
             using (HttpClient client = new HttpClient())
             {
-                // Adicionar as credenciais de autenticação básica
+
                 var byteArray = Encoding.ASCII.GetBytes($"{username}:{senha}");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
-                // Fazer a requisição GET à API
+
                 HttpResponseMessage response = await client.GetAsync(url);
 
-                // Verificar se a requisição foi bem-sucedida (código de status 200)
+
                 if (response.IsSuccessStatusCode)
                 {
-                    // Ler o conteúdo da resposta como uma string
+
                     string responseData = await response.Content.ReadAsStringAsync();
 
-                    // Processar os dados da resposta
+
                     List<Produto> novosProdutos = ObterNovosProdutos(responseData);
                     foreach (Produto produto in novosProdutos)
                     {
                         if (!produtosVerificados.Exists(p => p.Id == produto.Id))
                         {
-                            // Se é um novo produto, faça algo com ele
+
                             Console.WriteLine($"Novo produto encontrado: ID {produto.Id}, Nome: {produto.Nome}");
-                            // Adicionar o produto à lista de produtos verificados
+
                             produtosVerificados.Add(produto);
 
                            
@@ -120,7 +125,7 @@ class Program
                                 string responseCompare = Benchmarking.Compare(precoLivre, precoLuiza, linkMer, linkMag);
                                 RegistrarLog("210703", "joaopedro", DateTime.Now, "Benchmarking", "Success", produto.Id);
 
-                                SendLink.EnviarEmail(produto.Nome, precoLivre, precoLuiza, responseCompare);
+                                SendLink.EnviarEmail(nomeMail, produto.Nome, precoLivre, precoLuiza, responseCompare);
                                 RegistrarLog("210703", "joaopedro", DateTime.Now, "SendEmail", "Success", produto.Id);
 
 
@@ -135,27 +140,26 @@ class Program
                 }
                 else
                 {
-                    // Imprimir mensagem de erro caso a requisição falhe
+
                     Console.WriteLine($"Erro: {response.StatusCode}");
                 }
             }
         }
         catch (Exception ex)
         {
-            // Imprimir mensagem de erro caso ocorra uma exceção
+
             Console.WriteLine($"Erro ao fazer a requisição: {ex.Message}");
         }
     }
 
-    // Método para processar os dados da resposta e obter produtos
+
     static List<Produto> ObterNovosProdutos(string responseData)
     {
-        // Desserializar os dados da resposta para uma lista de produtos
+
         List<Produto> produtos = JsonConvert.DeserializeObject<List<Produto>>(responseData);
         return produtos;
     }
 
-    // Método para verificar se o produto já foi registrado no banco de dados
     static bool ProdutoJaRegistrado(int idProduto)
     {
         using (var context = new LogContext())
@@ -164,7 +168,7 @@ class Program
         }
     }
 
-    // Método para registrar um log no banco de dados
+
     static void RegistrarLog(string codRob, string usuRob, DateTime dateLog, string processo, string infLog, int idProd)
     {
         using (var context = new LogContext())
@@ -182,8 +186,23 @@ class Program
             context.SaveChanges();
         }
     }
+    static void AskMail()
+    {
+        Console.WriteLine("Informe um Email válido: ");
+        string inputEmail = Console.ReadLine();
 
-    // Classe para representar um produto
+        if (SendLink.IsValidEmail(inputEmail))
+        {
+            nomeMail = inputEmail;
+        }
+        else
+        {
+            Console.WriteLine("\nInválido");
+            AskMail();
+        }
+    }
+
+
     public class Produto
     {
         public int Id { get; set; }

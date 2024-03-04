@@ -4,14 +4,15 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace RaspagemPrec.Operations
 {
-    internal class SendLink
+    public class SendLink
     {
 
-        public static void EnviarEmail(string nome, string precoLuiza, string precoLivre, string responseCompare)
+        public static void EnviarEmail(string nomeMail, string nome, string precoLivre, string precoLuiza, string responseCompare)
         {
             
             string smtpServer = "smtp-mail.outlook.com"; 
@@ -27,16 +28,16 @@ namespace RaspagemPrec.Operations
                 client.EnableSsl = true; 
 
 
-                MailMessage mensagem = new MailMessage(remetente, "jpsendtest@outlook.com")
+                MailMessage mensagem = new MailMessage(remetente, nomeMail)
                 {
                     Subject = "Resultado da comparação de preços",
                     Body = $"Mercado Livre\n" +
                            $"Produto: {nome}\n" +
-                           $"Preço: {precoLivre}\n" +
+                           $"Preço: R${precoLivre}\n" +
                            "\n" +
                            $"Magazine Luiza\n" +
                            $"Produto: {nome}\n" +
-                           $"Preço: R${precoLuiza}\n" +
+                           $"Preço: {precoLuiza}\n" +
                            "\n" +
                            $"{responseCompare}\n"+
                            "\n"+
@@ -53,7 +54,18 @@ namespace RaspagemPrec.Operations
 
 
         }
+        public static bool IsValidEmail(string email)
+        {
+            
+            string pattern = @"^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$";
+
+            Regex regex = new Regex(pattern);
+
+            return regex.IsMatch(email);
+        }
+        
     }
+}
 
     
-}
+
