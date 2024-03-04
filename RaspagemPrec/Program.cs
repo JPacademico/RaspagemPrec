@@ -15,7 +15,7 @@ using RaspagemPrec.Operations;
 
 public class LogContext : DbContext
 {
-    public DbSet<Log> Logs { get; set; }
+    public DbSet<Log> LOGROBO { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -26,13 +26,13 @@ public class LogContext : DbContext
 public class Log
 {
     [Key]
-    public int IdLog { get; set; }
-    public string CodRob { get; set; }
-    public string UsuRob { get; set; }
+    public int iDlOG { get; set; }
+    public string CodigoRobo { get; set; }
+    public string UsuarioRobo { get; set; }
     public DateTime DateLog { get; set; }
-    public string Processo { get; set; }
-    public string InfLog { get; set; }
-    public int IdProd { get; set; }
+    public string Etapa { get; set; }
+    public string InformacaoLog { get; set; }
+    public int IdProdutoAPI { get; set; }
 }
 
 class Program
@@ -164,7 +164,7 @@ class Program
     {
         using (var context = new LogContext())
         {
-            return context.Logs.Any(log => log.IdProd == idProduto);
+            return context.LOGROBO.Any(log => log.IdProd == idProduto);
         }
     }
 
@@ -182,7 +182,7 @@ class Program
                 InfLog = infLog,
                 IdProd = idProd
             };
-            context.Logs.Add(log);
+            context.LOGROBO.Add(log);
             context.SaveChanges();
         }
     }
