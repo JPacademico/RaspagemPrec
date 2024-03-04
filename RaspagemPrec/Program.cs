@@ -164,7 +164,7 @@ class Program
     {
         using (var context = new LogContext())
         {
-            return context.LOGROBO.Any(log => log.IdProd == idProduto);
+            return context.LOGROBO.Any(log => log.IdProdutoAPI == idProduto);
         }
     }
 
@@ -175,12 +175,12 @@ class Program
         {
             var log = new Log
             {
-                CodRob = codRob,
-                UsuRob = usuRob,
+                CodigoRobo = codRob,
+                UsuarioRobo = usuRob,
                 DateLog = dateLog,
-                Processo = processo,
-                InfLog = infLog,
-                IdProd = idProd
+                Etapa = processo,
+                InformacaoLog = infLog,
+                IdProdutoAPI = idProd
             };
             context.LOGROBO.Add(log);
             context.SaveChanges();
