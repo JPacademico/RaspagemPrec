@@ -41,7 +41,7 @@ namespace RaspagemPrec.Operations
                            "\n" +
                            $"{responseCompare}\n"+
                            "\n"+
-                           "by BOT jrll - João Pedro Brandão Almeida"
+                           "by BOT 0704 - João Pedro Brandão Almeida"
 
 
                 };
