@@ -28,7 +28,7 @@ public class MagazineLuizaScraper
                     string firstProductPrice = priceElement.Text;
 
                     // Registra o log com o ID do produto
-                    RegistrarLog("210703", "joaopedro", DateTime.Now, "Scraping - Magazine Luiza", "Sucesso", idProduto);
+                    RegistrarLog("0704", "joaopedro", DateTime.Now, "Scraping - Magazine Luiza", "Sucesso", idProduto);
 
                     // Retorna o preço
                     return firstProductPrice;
@@ -38,7 +38,7 @@ public class MagazineLuizaScraper
                     Console.WriteLine("Preço não encontrado.");
 
                     // Registra o log com o ID do produto
-                    RegistrarLog("210703", "joaopedro", DateTime.Now, "Scraping - Magazine Luiza", "Preço não encontrado", idProduto);
+                    RegistrarLog("0704", "joaopedro", DateTime.Now, "Scraping - Magazine Luiza", "Preço não encontrado", idProduto);
 
                     return null;
                 }
@@ -49,7 +49,7 @@ public class MagazineLuizaScraper
             Console.WriteLine($"Erro ao acessar a página: {ex.Message}");
 
             // Registra o log com o ID do produto
-            RegistrarLog("210703", "joaopedro", DateTime.Now, "Scraping - Magazine Luiza", $"Erro: {ex.Message}", idProduto);
+            RegistrarLog("0704", "joaopedro", DateTime.Now, "Scraping - Magazine Luiza", $"Erro: {ex.Message}", idProduto);
 
             return null;
         }

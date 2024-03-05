@@ -26,7 +26,7 @@ public class MercadoLivreScraper
                 string firstProductPrice = firstProductPriceNode.InnerText.Trim();
 
                 // Registra o log com o ID do produto
-                RegistrarLog("210703", "joaopedro", DateTime.Now, "Scraping - Mercado Livre", "Sucesso", idProduto);
+                RegistrarLog("0704", "joaopedro", DateTime.Now, "Scraping - Mercado Livre", "Sucesso", idProduto);
 
                 // Retorna o preço
                 return firstProductPrice;
@@ -36,7 +36,7 @@ public class MercadoLivreScraper
                 Console.WriteLine("Preço não encontrado.");
 
                 // Registra o log com o ID do produto
-                RegistrarLog("210703", "joaopedro", DateTime.Now, "Scraping - Mercado Livre", "Preço não encontrado", idProduto);
+                RegistrarLog("0704", "joaopedro", DateTime.Now, "Scraping - Mercado Livre", "Preço não encontrado", idProduto);
 
                 return null;
             }
@@ -46,7 +46,7 @@ public class MercadoLivreScraper
             Console.WriteLine($"Erro ao acessar a página: {ex.Message}");
 
             // Registra o log com o ID do produto
-            RegistrarLog("210703", "joaopedro", DateTime.Now, "Scraping - Mercado Livre", $"Erro: {ex.Message}", idProduto);
+            RegistrarLog("0704", "joaopedro", DateTime.Now, "Scraping - Mercado Livre", $"Erro: {ex.Message}", idProduto);
 
             return null;
         }

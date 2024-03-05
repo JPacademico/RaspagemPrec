@@ -110,7 +110,7 @@ class Program
                            
                             if (!ProdutoJaRegistrado(produto.Id))
                             {
-                                RegistrarLog("210703", "joaopedro", DateTime.Now, "Verify Product", "Success", produto.Id);
+                                RegistrarLog("0704", "joaopedro", DateTime.Now, "Verify Product", "Success", produto.Id);
 
                                 MercadoLivreScraper mercadoLivreScraper = new MercadoLivreScraper();
                                 
@@ -123,14 +123,14 @@ class Program
                                 string linkMag = $"https://www.magazineluiza.com.br/busca/{produto.Nome}".Replace(' ', '+');
 
                                 string responseCompare = Benchmarking.Compare(precoLivre, precoLuiza, linkMer, linkMag);
-                                RegistrarLog("210703", "joaopedro", DateTime.Now, "Benchmarking", "Success", produto.Id);
+                                RegistrarLog("0704", "joaopedro", DateTime.Now, "Benchmarking", "Success", produto.Id);
 
                                 SendLink.EnviarEmail(nomeMail, produto.Nome, precoLivre, precoLuiza, responseCompare);
-                                RegistrarLog("210703", "joaopedro", DateTime.Now, "SendEmail", "Success", produto.Id);
+                                RegistrarLog("0704", "joaopedro", DateTime.Now, "SendEmail", "Success", produto.Id);
 
 
                                 SendZap.EnviarZap(numZap, produto.Nome, precoLivre, precoLuiza, responseCompare);
-                                RegistrarLog("210703", "joaopedro", DateTime.Now, "SendZap", "Success", produto.Id);
+                                RegistrarLog("0704", "joaopedro", DateTime.Now, "SendZap", "Success", produto.Id);
 
                                 
 
@@ -164,7 +164,7 @@ class Program
     {
         using (var context = new LogContext())
         {
-            return context.LOGROBO.Any(log => log.IdProdutoAPI == idProduto);
+            return context.LOGROBO.Any(log => log.IdProdutoAPI == idProduto && log.CodigoRobo == "0704");
         }
     }
 
